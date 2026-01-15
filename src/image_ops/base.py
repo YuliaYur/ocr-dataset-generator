@@ -1,5 +1,7 @@
 from abc import ABC
-from numpy import array
+from typing import Callable, Optional
+
+import numpy as np
 
 
 class BaseImageOperation(ABC):
@@ -7,16 +9,16 @@ class BaseImageOperation(ABC):
     Base class for all image operations. Provides an interface for successor classes. 
     """
     
-    _op = None
+    _op: Optional[Callable[[np.ndarray], np.ndarray]] = None
 
-    def process(self, X: array) -> array:
+    def process(self, image: np.ndarray) -> np.ndarray:
         if not self._op:
-            raise NotImplemented
+            raise NotImplementedError
         
-        return self._op(X)
+        return self._op(image)
 
-    def __call__(self, X: array, *args, **kwargs) -> array:
+    def __call__(self, image: np.ndarray, *args, **kwargs) -> np.ndarray:
         if not self._op:
-            raise NotImplemented
+            raise NotImplementedError
         
-        return self._op(X)
+        return self._op(image)

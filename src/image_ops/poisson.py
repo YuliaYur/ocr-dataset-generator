@@ -1,5 +1,5 @@
 from .base import BaseImageOperation
-from noise import NoiseTypes, noisify
+from ..noise import NoiseTypes, noisify
 
 
 class PoissonNoiseOperation(BaseImageOperation):

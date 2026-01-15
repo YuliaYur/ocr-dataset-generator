@@ -1,6 +1,10 @@
+"""Noise generation utilities."""
+
+from enum import Enum
+from typing import Any
+
 import numpy as np
 from numpy.random import randint
-from enum import Enum
 
 
 class NoiseTypes(Enum):
@@ -19,12 +23,11 @@ class NoiseTypes(Enum):
     SPECKLE = 4
 
 
-def noisify(image: np.array, noise_type: NoiseTypes, **kwargs) -> np.array:
-    """
-    Function adds selected randomly sampled noise to an image.
+def noisify(image: np.ndarray, noise_type: NoiseTypes, **kwargs: Any) -> np.ndarray:
+    """Add randomly sampled noise to an image.
 
     Args:
-        image (np.array): tensor representing an image
+        image (np.ndarray): tensor representing an image
         noise_type (NoiseTypes): type of noise to use (e.g Gaussian, S&P, etc)
         amount (float): value within [0;1] range specifying ratio of all pixels in an image
             that will be distorted (only for Salt and Pepper noise).
@@ -45,16 +48,16 @@ def noisify(image: np.array, noise_type: NoiseTypes, **kwargs) -> np.array:
         if not (0.0 <= salt_vs_pepper <= 1.0 and 0.0 <= amount <= 1.0):
             raise ValueError('salt_vs_pepper and amount ratios must be within [0;1] range')
         
-        H, W = image.shape[:2]
-        num_distorted_pixels = H * W * amount
+        height, width = image.shape[:2]
+        num_distorted_pixels = height * width * amount
 
         num_salt_pixels = int(num_distorted_pixels * salt_vs_pepper)
         # salt i, j indices in an image
-        noised[randint(0, H - 1, num_salt_pixels), randint(0, W - 1, num_salt_pixels)] = 255.0
+        noised[randint(0, height - 1, num_salt_pixels), randint(0, width - 1, num_salt_pixels)] = 255.0
 
         num_pepper_pixels = int(num_distorted_pixels * (1 - salt_vs_pepper)) 
         # pepper i, j indices in an image
-        noised[randint(0, H - 1, num_pepper_pixels), randint(0, W - 1, num_pepper_pixels)] = 0.0
+        noised[randint(0, height - 1, num_pepper_pixels), randint(0, width - 1, num_pepper_pixels)] = 0.0
     elif noise_type == NoiseTypes.GAUSSIAN:
         noised = image + np.random.normal(loc=kwargs.get('mean', 0), scale=kwargs.get('stddev', 1), size=image.shape)
     elif noise_type == NoiseTypes.SPECKLE:

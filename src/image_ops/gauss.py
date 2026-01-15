@@ -1,5 +1,5 @@
-from image_ops.base import BaseImageOperation
-from noise import NoiseTypes, noisify
+from .base import BaseImageOperation
+from ..noise import NoiseTypes, noisify
 
 
 class GaussianNoiseOperation(BaseImageOperation):

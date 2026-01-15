@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ocr-dataset-generator"
+version = "0.1.0"
+description = "Tools for synthetic OCR dataset generation."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+dependencies = [
+    "numpy>=1.23",
+    "opencv-python>=4.6",
+    "Pillow>=9.2",
+    "pytesseract>=0.3.10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "jupyter>=1.0",
+    "matplotlib>=3.6",
+]
+
+[project.scripts]
+ocr-generate-text-images = "generate_text_images_cli:main"
+ocr-degrade-images = "degrade_images_cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]

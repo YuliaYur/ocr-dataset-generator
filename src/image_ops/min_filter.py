@@ -1,5 +1,5 @@
-from image_ops.base import BaseImageOperation
-from blur_images import min_filter
+from .base import BaseImageOperation
+from ..blur_images import min_filter
 
 
 class MinFilterOperation(BaseImageOperation):

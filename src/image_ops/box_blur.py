@@ -1,5 +1,5 @@
-from image_ops.base import BaseImageOperation
-from blur_images import box_blur
+from .base import BaseImageOperation
+from ..blur_images import box_blur
 
 
 class BoxBlurOperation(BaseImageOperation):

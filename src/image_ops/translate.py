@@ -1,5 +1,5 @@
-from image_ops.base import BaseImageOperation
-from transformations import translate
+from .base import BaseImageOperation
+from ..transformations import translate
 
 
 class TranslateOperation(BaseImageOperation):

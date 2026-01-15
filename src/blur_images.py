@@ -1,52 +1,59 @@
-import PIL
-from PIL import Image
-from PIL import ImageFilter
-from os import path
+"""Blur utilities for image datasets."""
+
+import glob
 import os
+
+import PIL
 import numpy as np
-import argparse
-
-#input_dir = r'C:/Users/Ksy/Desktop/test'
-#filename = "text_image1.png"
-#filter = "gaussian"
-#radius = 2
-
-def blur_images(input_dir: str, filename: str, filter: str, radius: int):
-
-    standart_path = os.path.normpath(input_dir)
-    for root, dirs, files in os.walk(standart_path):
-        for file in files:
-            if (file == filename):
-                my_image = Image.open(file)
-
-    my_image.show()
-
-    numpydata = np.asarray(my_image)
-    #print(numpydata)
-
-    #blur image
-    if (filter == "gaussian"):
-        result_image = my_image.filter(ImageFilter.GaussianBlur(radius))
-
-    if (filter == "box"):
-        result_image = my_image.filter(ImageFilter.BoxBlur(radius))
-
-    if (filter == "min"):
-        result_image = my_image.filter(ImageFilter.MinFilter(radius))
-
-    if (filter == "max"):
-        result_image = my_image.filter(ImageFilter.MaxFilter(radius))
-
-    if (filter == "median"):
-        result_image = my_image.filter(ImageFilter.MedianFilter(radius))
+from PIL import Image, ImageFilter
 
 
-    output_dir = os.path.join(standart_path, 'blurred_images')
-    output_path = os.path.join(output_dir,os.path.splitext(filename)[0] + "_blurred.png" )
+_FILTERS = {
+    'gaussian': lambda image, radius: image.filter(ImageFilter.GaussianBlur(radius)),
+    'box': lambda image, radius: image.filter(ImageFilter.BoxBlur(radius)),
+    'min': lambda image, radius: image.filter(ImageFilter.MinFilter(radius)),
+    'max': lambda image, radius: image.filter(ImageFilter.MaxFilter(radius)),
+    'median': lambda image, radius: image.filter(ImageFilter.MedianFilter(radius)),
+}
 
-    newfilename = os.path.splitext(filename)[0] + "_blurred.png"
-    #result_image.save(os.path.splitext(filename)[0] + "_blurred.png")
-    result_image.save(output_path)
+
+def blur_images(input_dir: str, filename: str, filter_name: str, radius: int, output_dir: str = None) -> None:
+    """Blur images in a directory with a selected filter."""
+    if not os.path.isdir(input_dir):
+        raise ValueError('Invalid images directory path specified.')
+
+    filter_key = (filter_name or '').lower()
+    if filter_key not in _FILTERS:
+        raise ValueError(f'Invalid filter specified: {filter_name}')
+
+    if radius <= 0:
+        raise ValueError('Radius must be a positive integer.')
+
+    if output_dir is None:
+        output_dir = os.path.join(input_dir, 'blurred_images')
+    os.makedirs(output_dir, exist_ok=True)
+
+    if filename:
+        candidates = [os.path.join(input_dir, filename)]
+    else:
+        candidates = glob.glob(os.path.join(input_dir, '*.*'))
+
+    if not candidates:
+        raise ValueError('No images found to process.')
+
+    processed = 0
+    for image_path in candidates:
+        if not os.path.isfile(image_path):
+            continue
+        image = Image.open(image_path)
+        result_image = _FILTERS[filter_key](image, radius)
+        base_name = os.path.splitext(os.path.basename(image_path))[0]
+        output_path = os.path.join(output_dir, f'{base_name}_{filter_key}_r{radius}.png')
+        result_image.save(output_path)
+        processed += 1
+
+    if processed == 0:
+        raise ValueError('No valid images found to process.')
 
 
 def gaussian_blur(image: np.array, radius=1) -> np.array:

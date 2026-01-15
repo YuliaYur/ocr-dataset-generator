@@ -1,5 +1,5 @@
-from image_ops.base import BaseImageOperation
-from blur_images import gaussian_blur
+from .base import BaseImageOperation
+from ..blur_images import gaussian_blur
 
 
 class GaussianBlurOperation(BaseImageOperation):

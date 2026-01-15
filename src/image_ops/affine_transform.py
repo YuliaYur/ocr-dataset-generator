@@ -1,5 +1,5 @@
-from image_ops.base import BaseImageOperation
-from transformations import affine_transform
+from .base import BaseImageOperation
+from ..transformations import affine_transform
 
 
 class AffineTransformOperation(BaseImageOperation):

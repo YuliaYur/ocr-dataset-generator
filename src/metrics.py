@@ -1,44 +1,31 @@
-from numpy import zeros as np_zeros
+import numpy as np
 
 
-def edit_distance(token1:str, token2:str) -> int:
-    """
-    Calculates edit distance aka Levenshtein distance between two strings.
-    Returns:
-        (int): calculated distance. 
-    """
+def calculate_edit_distance(ground_truth_text: str, predicted_text: str) -> int:
+    """Calculate Levenshtein edit distance between two strings."""
+    rows = len(ground_truth_text) + 1
+    cols = len(predicted_text) + 1
+    distance_mat = np.zeros((rows, cols), dtype=int)
 
-    n_rows = len(token1) + 1
-    n_cols = len(token2) + 1
-    distance_mat = np_zeros((n_rows, n_cols))
-    for i in range(n_rows):
-        distance_mat[i][0] = i
-    
-    for j in range(n_cols):
-        distance_mat[0][j] = j
-    
-    for i in range(1, n_rows):
-        for j in range(1, n_cols):
-            if token1[i - 1] == token2[j - 1]:
-                distance_mat[i][j] = distance_mat[i - 1][j - 1]
+    distance_mat[:, 0] = np.arange(rows)
+    distance_mat[0, :] = np.arange(cols)
+
+    for i in range(1, rows):
+        for j in range(1, cols):
+            if ground_truth_text[i - 1] == predicted_text[j - 1]:
+                distance_mat[i, j] = distance_mat[i - 1, j - 1]
             else:
-                # unknown value of matrix is calculated from a window 2x2
-                # say we have two tokens of length 2, so the iteration i=0, j=0 will deal with distance matrix 
-                # 0 1 2
-                # 1 x x
-                # 2 x x
-                # and mentioned 2x2 matrix will be
-                # 0 1
-                # 1 x
-                l_bot = distance_mat[i][j - 1]
-                r_top = distance_mat[i - 1][j]
-                l_top = distance_mat[i - 1][j - 1]
-                
-                if l_bot <= r_top and l_bot <= l_top:
-                    distance_mat[i][j] = l_bot + 1
-                elif r_top <= l_bot and r_top <= l_top:
-                    distance_mat[i][j] = r_top + 1
-                else:
-                    distance_mat[i][j] = l_top + 1
-            
-    return distance_mat[n_rows - 1][n_cols - 1]
+                insert_cost = distance_mat[i, j - 1]
+                delete_cost = distance_mat[i - 1, j]
+                replace_cost = distance_mat[i - 1, j - 1]
+                distance_mat[i, j] = min(insert_cost, delete_cost, replace_cost) + 1
+
+    return int(distance_mat[rows - 1, cols - 1])
+
+
+def calculate_relative_edit_distance(ground_truth_text: str, predicted_text: str) -> float:
+    """Calculate relative Levenshtein edit distance between two strings. Result is non-negative value: 0 means the strings
+    are identical, 1 - the strings are completely different. The result may also exceed 1 if predicted_text is much longer
+    than ground_truth_text"""
+    edit_distance = calculate_edit_distance(ground_truth_text, predicted_text)
+    return edit_distance / len(ground_truth_text)

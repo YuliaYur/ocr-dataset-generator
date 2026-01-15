@@ -1,5 +1,5 @@
-from image_ops.base import BaseImageOperation
-from transformations import resize
+from .base import BaseImageOperation
+from ..transformations import resize
 import cv2 as cv
 
 

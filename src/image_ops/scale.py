@@ -1,5 +1,5 @@
-from image_ops.base import BaseImageOperation
-from transformations import scale
+from .base import BaseImageOperation
+from ..transformations import scale
 
 
 class ScaleOperation(BaseImageOperation):
