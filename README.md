@@ -115,7 +115,7 @@ python -m degrade_images_cli --images-dir output/text/images --out-dir output/de
       <img src="data/sample_images/degraded_00004.png" width="300"><br>
     </td>
     <td align="center">
-      <img src="data/sample_images/degraded_00005.png" width="100"><br>
+      <img src="data/sample_images/degraded_00005.png" width="300"><br>
     </td>
     <td align="center">
       <img src="data/sample_images/degraded_00007.png" width="250"><br>
