@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7f2e8"/>
+      <stop offset="100%" stop-color="#e8f0ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="600" fill="url(#bg)"/>
+  <rect x="120" y="150" width="380" height="260" rx="16" fill="#ffffff" stroke="#222222" stroke-width="3"/>
+  <rect x="700" y="150" width="380" height="260" rx="16" fill="#ffffff" stroke="#222222" stroke-width="3"/>
+  <rect x="160" y="190" width="300" height="12" fill="#111111"/>
+  <rect x="160" y="220" width="260" height="10" fill="#111111"/>
+  <rect x="160" y="245" width="280" height="10" fill="#111111"/>
+  <rect x="160" y="270" width="240" height="10" fill="#111111"/>
+  <rect x="160" y="295" width="210" height="10" fill="#111111"/>
+  <circle cx="740" cy="200" r="6" fill="#777777"/>
+  <circle cx="780" cy="235" r="5" fill="#555555"/>
+  <circle cx="920" cy="205" r="4" fill="#666666"/>
+  <rect x="740" y="260" width="240" height="12" fill="#3a3a3a"/>
+  <rect x="740" y="285" width="210" height="10" fill="#3a3a3a"/>
+  <rect x="740" y="310" width="200" height="10" fill="#3a3a3a"/>
+  <rect x="520" y="270" width="160" height="4" fill="#111111"/>
+  <rect x="520" y="280" width="160" height="4" fill="#111111"/>
+  <text x="310" y="440" font-family="Arial, sans-serif" font-size="22" fill="#222222" text-anchor="middle">CLEAR</text>
+  <text x="890" y="440" font-family="Arial, sans-serif" font-size="22" fill="#222222" text-anchor="middle">DEGRADED</text>
+  <text x="600" y="520" font-family="Arial, sans-serif" font-size="36" fill="#111111" text-anchor="middle">Synthetic OCR Data Pipeline</text>
+</svg>
